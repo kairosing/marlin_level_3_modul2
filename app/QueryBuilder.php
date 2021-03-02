@@ -7,7 +7,6 @@ use PDO;
 
 class QueryBuilder
 {
-
     private $pdo;
     private $queryFactory;
 
@@ -59,9 +58,6 @@ class QueryBuilder
         $sth->execute($update->getBindValues());
 
     }
-
-
-
 
     public function delete($table, $id){
         $delete = $this->queryFactory->newDelete();

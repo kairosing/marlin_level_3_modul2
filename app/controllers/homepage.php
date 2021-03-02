@@ -2,7 +2,8 @@
 
 use App\QueryBuilder;
 
-$db = new QueryBuilder();
 
-$db->delete('posts', '13');
+
+$db = new QueryBuilder();
+$db->delete('posts','14');
 
