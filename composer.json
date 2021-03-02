@@ -1,0 +1,20 @@
+{
+  "config": {
+    "process-timeout": 1800,
+    "github-oauth": {
+      "github.com": "b63e7c2ed75fb203c0385417fbdb20c689d76361"
+    }
+  },
+
+
+  "require": {
+    "aura/sqlquery": "2.7.1"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  }
+
+}
