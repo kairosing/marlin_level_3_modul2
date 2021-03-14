@@ -1,16 +1,64 @@
-
 <?php
 if( !session_id() ) @session_start();
 
 require "../vendor/autoload.php";
 
+use Delight\Auth\Auth;
+use DI\ContainerBuilder;
+use League\Plates\Engine;
+use Aura\SqlQuery\QueryFactory;
+
+$builder = new ContainerBuilder();
+$builder->addDefinitions([
+
+    Engine::class => function(){
+        return new Engine('../app/views');
+  },
+
+    QueryFactory::class => function(){
+        return new QueryFactory('mysql');
+    },
+
+    PDO::class => function(){
+        return new PDO("mysql:host=localhost;dbname=app4", "root", "");
+    },
+
+    Auth::class => function($builder){
+        return new Auth($builder->get("PDO"));
+    }
+]);
+
+$container = $builder->build();
+
 
 $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/users', 'get_all_users_handler');
-    // {id} must be a number (\d+)
-    $r->addRoute('GET', '/user/{id:\d+}', 'get_user_handler');
-    // The /{title} suffix is optional
-    $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
+    $r->addRoute('GET', '/registration', ['App\Controllers\Registration', 'showForm']);
+    $r->addRoute('POST', '/registration', ['App\Controllers\Registration', 'postHandler']);
+
+    $r->addRoute('GET', '/login', ['App\Controllers\Login', 'showForm']);
+    $r->addRoute('POST', '/login', ['App\Controllers\Login', 'postHandler']);
+
+    $r->addRoute('GET', '/', ['App\Controllers\Users', 'index']);
+
+    $r->addRoute('GET', '/logout', ['App\Controllers\Users', 'logout']);
+
+    $r->addRoute('GET', '/create', ['App\Controllers\Users', 'showFormCreate']);
+    $r->addRoute('POST', '/create', ['App\Controllers\Users', 'createPostHandler']);
+
+    $r->addRoute('GET', '/edit/{id:\d+}', ['App\Controllers\Users', 'editShowForm']);
+    $r->addRoute('POST', '/edit/{id:\d+}', ['App\Controllers\Users', 'editPostHandler']);
+
+    $r->addRoute('GET', '/security/{id:\d+}', ['App\Controllers\Users', 'securityShowForm']);
+    $r->addRoute('POST', '/security/{id:\d+}', ['App\Controllers\Users', 'securityPostHandler']);
+
+    $r->addRoute('GET', '/status/{id:\d+}', ['App\Controllers\Users', 'statusShowForm']);
+    $r->addRoute('POST', '/status/{id:\d+}', ['App\Controllers\Users', 'statusPostHandler']);
+
+    $r->addRoute('GET', '/media/{id:\d+}', ['App\Controllers\Users', 'mediaShowForm']);
+    $r->addRoute('POST', '/media/{id:\d+}', ['App\Controllers\Users', 'mediaPostHandler']);
+
+    $r->addRoute('GET', '/delete/{id:\d+}', ['App\Controllers\Users', 'delete']);
+
 });
 
 // Fetch method and URI from somewhere
@@ -26,44 +74,20 @@ $uri = rawurldecode($uri);
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
-        // ... 404 Not Found
+        // ... 404 Not Found не туда попали
+        echo '404';
         break;
     case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
         $allowedMethods = $routeInfo[1];
-        // ... 405 Method Not Allowed
+        // ... 405 Method Not Allowed метод не разрышен
+    echo '405';
         break;
     case FastRoute\Dispatcher::FOUND:
         $handler = $routeInfo[1];
         $vars = $routeInfo[2];
+        var_dump($handler, $vars);die();
+        $container->call($handler, $vars);
+
         // ... call $handler with $vars
         break;
 }
-
-
-
-
-
-
-
-//
-//if (true){
-//    flash()->success('Hot!');
-//}
-//
-//echo flash()->display();
-//
-
-//$templates = new League\Plates\Engine('../app/views');
-//d($templates);
-//
-//echo $templates->render('about', ['title' => 'Jonathan']);
-//
-
-
-//if ($_SERVER['REQUEST_URI'] == '/home'){
-//    require '../app/controllers/homepage.php';
-//
-//}
-//
-//exit;
-//
