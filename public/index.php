@@ -20,7 +20,7 @@ $builder->addDefinitions([
     },
 
     PDO::class => function(){
-        return new PDO("mysql:host=localhost;dbname=app4", "root", "");
+        return new PDO("mysql:host=localhost;dbname=app4","root","");
     },
 
     Auth::class => function($builder){
@@ -85,7 +85,7 @@ switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::FOUND:
         $handler = $routeInfo[1];
         $vars = $routeInfo[2];
-        var_dump($handler, $vars);die();
+       //var_dump(class_exists($handler[0]));die();
         $container->call($handler, $vars);
 
         // ... call $handler with $vars

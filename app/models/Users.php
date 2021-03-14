@@ -1,12 +1,14 @@
 <?php
 
 
-namespace App\model;
+namespace App\Models;
 use Aura\SqlQuery\QueryFactory;
 use PDO;
 
 class Users {
 
+    private $queryFactory;
+    private $pdo;
 
     public function __construct(QueryFactory $queryFactory, PDO $pdo)
     {

@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '886436a725f28f27c15745bf86b8c1aa485b5ecc',
+    'reference' => 'cb3aba8ec9c3623fab8306281d1a0cd005b93763',
     'name' => '__root__',
   ),
   'versions' => 
@@ -42,7 +42,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '886436a725f28f27c15745bf86b8c1aa485b5ecc',
+      'reference' => 'cb3aba8ec9c3623fab8306281d1a0cd005b93763',
     ),
     'aura/sqlquery' => 
     array (

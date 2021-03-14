@@ -1,9 +1,9 @@
 <?php
-namespace App\controllers;
+namespace App\Controllers;
 use League\Plates\Engine;
 use Delight\Auth\Auth;
 use \Tamtamchik\SimpleFlash\Flash;
-use App\Model\Users as UsersData;
+use App\Models\Users as UsersData;
 
 
 
@@ -26,7 +26,9 @@ class Users
 
     public function index()
     {
+        //var_dump($this->auth->isLoggedIn() || $this->auth->isRemembered());die();
 
+        ///d($this->templates);die();
         if ($this->auth->isLoggedIn() || $this->auth->isRemembered()){
 
             echo $this->templates->render('users', ['flash' => $this->flash->display(), 'auth' => $this->auth, 'users' => $this->user->getAllUsers()]);
@@ -58,7 +60,7 @@ class Users
             if ($userId){//если userId создан, то добавляем остальные данные в таблицы
 
                 //добавляем данные в таблицу users_info
-                $this->user->insert('users_info',
+                $this->user->insert('users',
                     [
                         'user_id',
                         'name',
@@ -80,7 +82,7 @@ class Users
 
                 //добавляем данные в таблицу users_links
 
-                $this->user->insert('users_links',
+                $this->user->insert('users',
                     [
                         'user_id',
                         'vk',
